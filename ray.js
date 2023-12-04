@@ -4,9 +4,8 @@ class Ray {
         this.dir = createVector(1, 0);
         this.dir.rotate(-2*PI*angle/360);
 
-
-
-        this.maxDistance = windowWidth/3;
+				//TODO: maxDistance whichever width or height greater? OR constant
+        this.maxDistance = ((windowWidth>windowHeight) ? windowWidth : windowHeight) / 3;
 
         this.closest_distance = this.maxDistance;
     }
@@ -40,6 +39,9 @@ class Ray {
     }
 
     cast(boundary) {
+			// Line-line Intersection. 
+			// See: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Given_two_points_on_each_line_segment
+
         const x1 = boundary.a.x;
         const y1 = boundary.a.y;
         const x2 = boundary.b.x;
@@ -47,8 +49,8 @@ class Ray {
 
         const x3 = this.pos.x;
         const y3 = this.pos.y;
-        const x4 = this.pos.x + this.dir.x;
-        const y4 = this.pos.y + this.dir.y;
+        const x4 = this.pos.x + this.maxDistance*this.dir.x;
+        const y4 = this.pos.y + this.maxDistance*this.dir.y;
 
         const denominator = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4);
         // This means they are parallel or coincident
@@ -59,7 +61,8 @@ class Ray {
         const t = ((x1-x3)*(y3-y4) - (y1-y3)*(x3-x4)) / denominator;
         const u = ((x1-x3)*(y1-y2) - (y1-y3)*(x1-x2)) / denominator;
 
-        if(t<1 && t>0 && u>0) {
+
+        if(t<=1 && t>=0 && u>=0 && u<=1) {
             // Returns the point of intersection
             const p_x = x1 + t*(x2-x1);
             const p_y = y1 + t*(y2-y1);

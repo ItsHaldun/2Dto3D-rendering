@@ -45,7 +45,7 @@ class Player {
         let width = windowWidth / this.rays.length;
         let x = 0;
 
-        rectMode(CENTER);
+        rectMode(CORNER);
 
         for(let i=0; i<this.rays.length; i++) {
             let distance = this.rays[i].closest_distance;
@@ -57,9 +57,13 @@ class Player {
             stroke(bright);
 
             let size = map(distance, maxDist, 0, 0, windowHeight/2);
+						let horizon_offset = map(distance, 0, maxDist, 0, 1*windowHeight/4);
+						//horizon_offset = 0;
+            rect(x, 
+                4*windowHeight/4 - size - horizon_offset,
+								width, 
+								size);
 
-            rect(x+width/2, 
-                3*windowHeight/4, width, size);
             x += width;
             pop();
         }

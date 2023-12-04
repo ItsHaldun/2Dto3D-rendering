@@ -6,10 +6,10 @@ class rectangleWall {
         this.height = height;
 
         this.sides = [];
-        this.sides.push(new Boundary(x,y,x+width,y));   //Top
-        this.sides.push(new Boundary(x+width,y,x+width,y+width));   //Right
-        this.sides.push(new Boundary(x,y+width, x+width,y+width));   //Bottom
-        this.sides.push(new Boundary(x,y,x,y+width));   //Left
+        this.sides.push(new Boundary(x,y,x+width,y));   							//Top
+        this.sides.push(new Boundary(x+width,y,x+width,y+height));   	//Right
+        this.sides.push(new Boundary(x,y+height, x+width,y+height));  //Bottom
+        this.sides.push(new Boundary(x,y,x,y+height));   							//Left
     }
 
     show() {
