@@ -1,5 +1,5 @@
 class Player {
-    constructor(number_of_rays, x=200, y=200, moveSpeed=3, rotSpeed=3) {
+    constructor(number_of_rays, x=0, y=0, moveSpeed=1, rotSpeed=1) {
 				// Location parameters
         this.pos = createVector(x, y);
         this.dir = createVector(1, 0);
@@ -10,6 +10,7 @@ class Player {
 
 				// If the player is colliding with an object, we can inhibit movement
 				this.collidedObject = null;
+				this.slack = 1 * this.move_speed;
 
 				// Initialize the rays
         this.rays = [];
@@ -46,11 +47,10 @@ class Player {
     }
 
 		collusionCheck(objects) {
-			let slack = this.move_speed;
 			for (let i=0; i<objects.length; i++) {
 				// Check for collusion with object
-				if (this.pos.x >= objects[i].x - slack && this.pos.x <= objects[i].x + objects[i].width + slack) {
-					if (this.pos.y >= objects[i].y - slack && this.pos.y <= objects[i].y + objects[i].height + slack) {
+				if (this.pos.x >= objects[i].x - this.slack && this.pos.x <= objects[i].x + objects[i].width + this.slack) {
+					if (this.pos.y >= objects[i].y - this.slack && this.pos.y <= objects[i].y + objects[i].height + this.slack) {
 						// If it collides with something, get the collided object
 						this.collidedObject = objects[i];
 						break;
@@ -75,26 +75,101 @@ class Player {
 			if (keyIsDown(UP_ARROW)) {
 				// Check if we would move inside the collided object
 				if (this.collidedObject != null) {
-					if (x + dir.x * this.move_speed >= this.collidedObject.x && x + dir.x * this.move_speed <= this.collidedObject.x + this.collidedObject.width) {
-						if (y + dir.y * this.move_speed >= this.collidedObject.y && y + dir.y * this.move_speed <= this.collidedObject.y + this.collidedObject.height) {
-							return;
+					// If on left side
+					if (x >= this.collidedObject.x - 1*this.slack && 
+						  x <= this.collidedObject.x + 1*this.slack) {
+							// Update y is safe
+							y -= - dir.y * this.move_speed;
+							if (dir.x < 0) {
+								// Update x is safe
+								x += dir.x * this.move_speed;
+							}
+					}
+					// If on right side
+					else if (x <= this.collidedObject.x + this.collidedObject.width + 1*this.slack &&
+						 			 x >= this.collidedObject.x + this.collidedObject.width - 1*this.slack) {
+						// Update y is safe
+						y -= - dir.y * this.move_speed;
+						if (dir.x > 0) {
+							// Update x is safe
+							x += dir.x * this.move_speed;
 						}
 					}
+					// If on top side
+					if (y >= this.collidedObject.y - 1*this.slack &&
+									 y <= this.collidedObject.y + 1*this.slack) {
+						// Update x is safe
+						x += dir.x * this.move_speed;
+						if (dir.y < 0) {
+							// Update y is safe
+							y -= - dir.y * this.move_speed;
+						}
+					}
+					// If on bottom side
+					else if (y <= this.collidedObject.y + this.collidedObject.height + 1*this.slack &&
+									 y >= this.collidedObject.y + this.collidedObject.height - 1*this.slack) {
+		 				// Update x is safe
+						x += dir.x * this.move_speed;
+						if (dir.y > 0) {
+							// Update y is safe
+							y -= - dir.y * this.move_speed;
+						}
+	 				}
 				}
-				x += dir.x * this.move_speed;
-				y -= - dir.y * this.move_speed;
+				else {
+					x += dir.x * this.move_speed;
+					y -= - dir.y * this.move_speed;
+				}
 			}
+
 			if (keyIsDown(DOWN_ARROW)) {
 				// Check if we would move inside the collided object
 				if (this.collidedObject != null) {
-					if (x - dir.x * this.move_speed >= this.collidedObject.x && x - dir.x * this.move_speed <= this.collidedObject.x + this.collidedObject.width) {
-						if (y - dir.y * this.move_speed >= this.collidedObject.y && y - dir.y * this.move_speed <= this.collidedObject.y + this.collidedObject.height) {
-							return;
+					// If on left side
+					if (x >= this.collidedObject.x - 1*this.slack && 
+						  x <= this.collidedObject.x + 1*this.slack) {
+							// Update y is safe
+							y += - dir.y * this.move_speed;
+							if (dir.x > 0) {
+								// Update x is safe
+								x -= dir.x * this.move_speed;
+							}
+					}
+					// If on right side
+					else if (x <= this.collidedObject.x + this.collidedObject.width + 1*this.slack &&
+						 			 x >= this.collidedObject.x + this.collidedObject.width - 1*this.slack) {
+						// Update y is safe
+						y += - dir.y * this.move_speed;
+						if (dir.x < 0) {
+							// Update x is safe
+							x -= dir.x * this.move_speed;
 						}
 					}
-			}
-				x -= dir.x * this.move_speed;
-				y += - dir.y * this.move_speed;
+					// If on top side
+					if (y >= this.collidedObject.y - 1*this.slack &&
+									 y <= this.collidedObject.y + 1*this.slack) {
+						// Update x is safe
+						x -= dir.x * this.move_speed;
+						if (dir.y > 0) {
+							// Update y is safe
+							y += - dir.y * this.move_speed;
+						}
+					}
+					// If on bottom side
+					else if (y <= this.collidedObject.y + this.collidedObject.height + 1*this.slack &&
+									 y >= this.collidedObject.y + this.collidedObject.height - 1*this.slack) {
+		 				// Update x is safe
+						x -= dir.x * this.move_speed;
+						if (dir.y < 0) {
+							// Update y is safe
+							y += - dir.y * this.move_speed;
+						}
+	 				}
+				}
+				else {
+					x -= dir.x * this.move_speed;
+					y += - dir.y * this.move_speed;
+				}
 			}
 			this.updatePosition(x, y);
 		}

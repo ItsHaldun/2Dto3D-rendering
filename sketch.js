@@ -1,6 +1,6 @@
 let walls = [];
 let objects = [];
-let number_of_rays = 480;
+let number_of_rays = 256;
 let player;
 
 function setup() {
@@ -21,7 +21,7 @@ function setup() {
     }
   }
 
-  player = new Player(number_of_rays, 50, 50);
+  player = new Player(number_of_rays, 50, 50, 2, 2);
 }
 
 function draw() {
