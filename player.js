@@ -18,15 +18,26 @@ class Player {
 				this.slack = 1 * this.move_speed;
 
 				// Initialize the rays
+				this.pov = 110;
         this.rays = [];
         for(let i=number_of_rays/2; i>-number_of_rays/2; i--) {
-            let angle = i * (40 / (number_of_rays/2));
-            this.rays.push(new Ray(angle, 0, 0, maxCanvasWidth, maxCanvasHeight));
+            let angle = i * (this.pov / number_of_rays);
+            this.rays.push(new Ray(angle, 0, 0, maxCanvasWidth));
         }
         
 				// Move the player to the starting position
         this.updatePosition(x, y);
     }
+		
+		updateRayCount (count) {
+			// Initialize the rays
+			let current_angle = degrees(this.dir.angleBetween(createVector(1,0)));
+			this.rays = [];
+			for(let i=count/2; i>-count/2; i--) {
+					let angle = current_angle + i * (this.pov / count);
+					this.rays.push(new Ray(angle, 0, 0, this.maxCanvasWidth, this.maxCanvasHeight));
+			}
+		}
 
     cast(walls) {
         for(let i=0; i<this.rays.length; i++) {

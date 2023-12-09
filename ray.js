@@ -1,10 +1,10 @@
 class Ray {
-    constructor(angle, x=0, y=0, maxCanvasWidth, maxCanvasHeight) {
+    constructor(angle, x=0, y=0, maxCanvasWidth) {
         this.pos = createVector(x, y);
         this.dir = createVector(1, 0);
         this.dir.rotate(-2*PI*angle/360);
 
-        this.maxDistance = ((maxCanvasWidth>maxCanvasHeight) ? maxCanvasWidth : maxCanvasHeight) / 3;
+        this.maxDistance = maxCanvasWidth / 3;
 
         this.closest_distance = this.maxDistance;
     }
