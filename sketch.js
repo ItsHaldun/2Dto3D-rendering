@@ -27,7 +27,8 @@ function setup() {
 function draw() {
   background(0);
 
-  movePlayer();
+	player.collusionCheck(objects);
+  player.move();
 
   player.cast(walls);
 
@@ -36,29 +37,4 @@ function draw() {
   }
   player.show();
   player.draw3D();
-}
-
-function movePlayer() {
-  let move_speed = 3;
-  let rot_speed = 3;
-
-  x = player.pos.x;
-  y = player.pos.y;
-  dir = player.dir;
-
-  if (keyIsDown(LEFT_ARROW)) {
-    player.rotate(rot_speed);
-  }
-  if (keyIsDown(RIGHT_ARROW)) {
-    player.rotate(-rot_speed);
-  }
-  if (keyIsDown(UP_ARROW)) {
-    x += dir.x * move_speed;
-    y -= - dir.y * move_speed;
-  }
-  if (keyIsDown(DOWN_ARROW)) {
-    x -= dir.x * move_speed;
-    y += - dir.y * move_speed;
-  }
-  player.move(x, y);
 }
