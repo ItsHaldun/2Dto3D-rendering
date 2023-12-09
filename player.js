@@ -1,8 +1,13 @@
 class Player {
-    constructor(number_of_rays, x=0, y=0, moveSpeed=1, rotSpeed=1) {
+    constructor(number_of_rays, x=0, y=0, size=1, moveSpeed=1, rotSpeed=1, maxCanvasWidth, maxCanvasHeight) {
+				// Canvas parameters
+				this.maxCanvasWidth = maxCanvasWidth;
+				this.maxCanvasHeight = maxCanvasHeight;
+
 				// Location parameters
         this.pos = createVector(x, y);
         this.dir = createVector(1, 0);
+				this.size = size;
 
 				// Movement parameters
 				this.move_speed = moveSpeed;
@@ -16,7 +21,7 @@ class Player {
         this.rays = [];
         for(let i=number_of_rays/2; i>-number_of_rays/2; i--) {
             let angle = i * (40 / (number_of_rays/2));
-            this.rays.push(new Ray(angle));
+            this.rays.push(new Ray(angle, 0, 0, maxCanvasWidth, maxCanvasHeight));
         }
         
 				// Move the player to the starting position
@@ -171,6 +176,13 @@ class Player {
 					y += - dir.y * this.move_speed;
 				}
 			}
+			// Check for canvas bounds
+			if (x<0) {
+				x = 0;
+			}
+			if (y<0) {
+				y = 0;
+			}
 			this.updatePosition(x, y);
 		}
 
@@ -178,13 +190,18 @@ class Player {
         for(let i=0; i<this.rays.length; i++) {
             this.rays[i].show();
         }
+				push();
+				strokeWeight(this.size);
+				stroke(150,20,98);
+				point(this.pos.x, this.pos.y);
+				pop();
     }
 
     draw3D() {
-        let width = windowWidth / this.rays.length;
+        let width = this.maxCanvasWidth / this.rays.length;
         let x = 0;
 
-        rectMode(CORNER);
+        rectMode(CENTER);
 
         for(let i=0; i<this.rays.length; i++) {
             let distance = this.rays[i].closest_distance;
@@ -195,11 +212,9 @@ class Player {
             fill(bright);
             stroke(bright);
 
-            let size = map(distance, maxDist, 0, 0, windowHeight/2);
-						let horizon_offset = map(distance, 0, maxDist, 0, 1*windowHeight/4);
-						//horizon_offset = 0;
+            let size = map(distance, maxDist, 0, 0, this.maxCanvasHeight/2);
             rect(x, 
-                4*windowHeight/4 - size - horizon_offset,
+                3*this.maxCanvasHeight/4,
 								width, 
 								size);
 
