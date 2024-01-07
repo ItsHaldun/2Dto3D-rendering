@@ -1,5 +1,5 @@
 # 2D to 3D Rendering
-!["2d to 3d rendering"](assets\2d-to-3d-projection-showcase.gif)
+!["2d to 3d rendering"](assets/2d-to-3d-projection-showcase.gif)
 
 ## Summary
 Inspired by the original DOOM video game, this is my attempt to recreate 3D rendering of a 2D game.
