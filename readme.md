@@ -2,11 +2,9 @@
 !["2d to 3d rendering"](assets\2d-to-3d-projection-showcase.gif)
 
 ## Summary
-
 Inspired by the original DOOM video game, this is my attempt to recreate 3D rendering of a 2D game.
 
 ## How it works
-
 Did you know that original DOOM was not entirely 3D? It had a 2D map in which the character moved around, which is why you can't look up or down, or that shooting enemies in high-ground requires no additional aiming.
 
 How did they pull that off? I'm not sure, I actually didn't made further research on it... However, I got an idea that might replicate a limited version of the effect. Here is how it works:
